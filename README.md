@@ -1,44 +1,47 @@
-Друге практичне завдання: Проаналізуйте код і те що він буде виводити на екран. Чому так відбувається:
+# Java Selenium Web Testing — Лабораторні роботи
 
+> Автоматизоване тестування веб-застосунків на Java з використанням Selenium WebDriver.
 
-1  цей цикл проходить по масиву лише один раз — з i = 0 до i = 4.
-На кожному кроці перевіряє сусідні елементи і міняє їх місцями, якщо поточний більший за наступний.
+[![Java](https://img.shields.io/badge/Java-17+-ED8B00?style=flat&logo=openjdk&logoColor=white)](https://openjdk.org)
+[![Selenium](https://img.shields.io/badge/Selenium-4.x-43B02A?style=flat&logo=selenium&logoColor=white)](https://selenium.dev)
 
+## Зміст
 
- 2 код схожий на сортування бульбашкою, але робить лише один прохід по масиву.
-За один прохід у правильне місце потрапляє лише найбільше число, але інші залишаються не до кінця впорядкованими.
-Тому результат — частково відсортований масив, а не повністю.
+Серія практичних завдань з автоматизованого тестування:
 
+| Репо | Тема |
+|------|------|
+| `java-selenium-basics` | Базові Selenium тести, локатори елементів |
+| `java-selenium-pageobject` | PageObject паттерн, тест-сюіти |
+| `java-collections-testing` | Java Collections — аналіз HashSet/equals/hashCode |
 
-3 Програма лише частково сортує масив, бо цикл проходить його один раз.
-  Щоб відсортувати повністю, потрібно вкласти ще один цикл.
+## Лаб 1.3 — HashSet та equals()/hashCode()
 
+Демонструє критичну помилку при роботі з колекціями Java:
 
-приклад такого коду : 
+```java
+// Без перевизначення equals/hashCode — HashSet вважає об'єкти різними
+Set<User> set = new HashSet<>();
+set.add(new User("John", 25));
+set.add(new User("John", 25)); // дублікат — але set.size() == 2!
 
+// Після правильного перевизначення:
+// set.size() == 1 → "Passed!"
+```
 
-public class Main {
+**Урок:** Завжди перевизначай `equals()` та `hashCode()` для об'єктів у колекціях.
 
-    public static void main(String[] args) {
+## Технологічний стек
 
-        int[] values = {23, 12, 13, 17, 23, 19};
+- Java 17+
+- Selenium WebDriver 4.x
+- JUnit 5
+- Maven / Gradle
 
-        // Додаємо ще один цикл, щоб зробити кілька проходів по масиву
-        for (int pass = 0; pass < values.length - 1; pass++) { // зовнішній цикл
-            for (int i = 0; i < values.length - 1 - pass; i++) { // внутрішній цикл
-                if (values[i] > values[i + 1]) {
-                    int t = values[i];
-                    values[i] = values[i + 1];
-                    values[i + 1] = t;
-                }
-            }
-        }
+## Запуск
 
-        // Вивід повністю відсортованого масиву
-        for (int i : values) {
-            System.out.println(i);
-        }
-    }
-}
-
-
+```bash
+mvn test
+# або
+gradle test
+```
