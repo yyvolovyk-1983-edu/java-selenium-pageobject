@@ -1,47 +1,109 @@
-# Java Selenium Web Testing — Лабораторні роботи
+<div align="center">
 
-> Автоматизоване тестування веб-застосунків на Java з використанням Selenium WebDriver.
+# Java Selenium — PageObject Pattern
 
-[![Java](https://img.shields.io/badge/Java-17+-ED8B00?style=flat&logo=openjdk&logoColor=white)](https://openjdk.org)
-[![Selenium](https://img.shields.io/badge/Selenium-4.x-43B02A?style=flat&logo=selenium&logoColor=white)](https://selenium.dev)
+**Навчальний репозиторій: автоматизоване тестування веб-застосунків на Java**
 
-## Зміст
+[![Java](https://img.shields.io/badge/Java_17+-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://github.com/yyvolovyk-1983-edu/java-selenium-pageobject)
+[![Selenium](https://img.shields.io/badge/Selenium_4.x-43B02A?style=for-the-badge&logo=selenium&logoColor=white)](https://github.com/yyvolovyk-1983-edu/java-selenium-pageobject)
+[![JUnit](https://img.shields.io/badge/JUnit_5-25A162?style=for-the-badge&logo=junit5&logoColor=white)](https://github.com/yyvolovyk-1983-edu/java-selenium-pageobject)
+[![Status](https://img.shields.io/badge/Status-In_Progress-yellow?style=for-the-badge)]()
 
-Серія практичних завдань з автоматизованого тестування:
+</div>
 
-| Репо | Тема |
-|------|------|
-| `java-selenium-basics` | Базові Selenium тести, локатори елементів |
-| `java-selenium-pageobject` | PageObject паттерн, тест-сюіти |
-| `java-collections-testing` | Java Collections — аналіз HashSet/equals/hashCode |
+---
 
-## Лаб 1.3 — HashSet та equals()/hashCode()
+## Реалізовано
 
-Демонструє критичну помилку при роботі з колекціями Java:
+### Алгоритми сортування
 
 ```java
-// Без перевизначення equals/hashCode — HashSet вважає об'єкти різними
-Set<User> set = new HashSet<>();
-set.add(new User("John", 25));
-set.add(new User("John", 25)); // дублікат — але set.size() == 2!
+int[] arr = {23, 12, 13, 17, 23, 19};
 
-// Після правильного перевизначення:
-// set.size() == 1 → "Passed!"
+for (int i = 0; i < arr.length - 1; i++) {
+    if (arr[i] > arr[i + 1]) {
+        int temp = arr[i];
+        arr[i]   = arr[i + 1];
+        arr[i + 1] = temp;
+    }
+}
 ```
 
-**Урок:** Завжди перевизначай `equals()` та `hashCode()` для об'єктів у колекціях.
+---
 
-## Технологічний стек
+## Заплановано — PageObject Pattern
 
-- Java 17+
-- Selenium WebDriver 4.x
-- JUnit 5
-- Maven / Gradle
+```java
+public class LoginPage {
+    private WebDriver driver;
+
+    @FindBy(id = "username") private WebElement usernameField;
+    @FindBy(id = "password") private WebElement passwordField;
+    @FindBy(id = "submit")   private WebElement submitButton;
+
+    public LoginPage(WebDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(driver, this);
+    }
+
+    public void login(String user, String pass) {
+        usernameField.sendKeys(user);
+        passwordField.sendKeys(pass);
+        submitButton.click();
+    }
+}
+```
+
+### Test Suite з JUnit 5
+
+```java
+@ExtendWith(SeleniumExtension.class)
+class LoginTest {
+
+    @Test
+    void validLoginRedirectsToDashboard() {
+        LoginPage page = new LoginPage(driver);
+        page.login("user@example.com", "password");
+        assertEquals("https://example.com/dashboard", driver.getCurrentUrl());
+    }
+}
+```
+
+---
+
+## Технічний стек
+
+| Компонент | Версія |
+|---|---|
+| Java | 17+ |
+| Selenium WebDriver | 4.x |
+| JUnit | 5 |
+| Build tool | Maven / Gradle |
+
+---
+
+## Roadmap
+
+- [x] Базові алгоритми сортування (Java)
+- [ ] Selenium WebDriver — базові локатори
+- [ ] PageObject Pattern
+- [ ] Test Suite організація
+- [ ] Java Collections (HashSet, equals/hashCode)
+- [ ] CI/CD інтеграція (GitHub Actions)
+
+---
 
 ## Запуск
 
 ```bash
 mvn test
-# або
-gradle test
 ```
+
+---
+
+<div align="center">
+
+**Автор:** [Євген Воловик](https://github.com/yyvolovyk-1983-edu) · Харків, Україна
+📧 y.y.volovyk@student.khai.edu · [LinkedIn](https://www.linkedin.com/in/yevhen-volovyk/)
+
+</div>
